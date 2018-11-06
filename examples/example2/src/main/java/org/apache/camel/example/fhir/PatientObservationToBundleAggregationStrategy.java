@@ -5,7 +5,7 @@ import org.apache.camel.processor.aggregate.AggregationStrategy;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Resource;
 
-public class PatientConditionToBundleAggregationStrategy implements AggregationStrategy {
+public class PatientObservationToBundleAggregationStrategy implements AggregationStrategy {
 
     public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
         // the first time there are no existing message and therefore
