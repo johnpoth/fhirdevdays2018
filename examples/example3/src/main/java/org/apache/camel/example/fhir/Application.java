@@ -11,33 +11,40 @@ public class Application {
 
         @Override
         public void configure() {
-            restConfiguration().component("undertow")
+
+
+            restConfiguration().component("jetty")
                                .port("{{http.port}}")
                                .host("{{http.host}}")
-                               .apiProperty("api.title", "Patent Observation example")
+                               .apiProperty("api.title", "Patient Salesforces update")
                                .apiContextPath("api-doc");
 
-            rest("getPatientObservation")
-                .get("{MRN}")
-                .produces("text/plain")
-                .to("direct:getFhirPatientObservation");
+            rest("updatePatients")
+                .get("{MRNs}")
+                .produces("application/json")
+                .to("direct:synchronizeSalesforce");
 
-            from("direct:getFhirPatientObservation")
-                 .setHeader(FhirConstants.PROPERTY_PREFIX + "resourceClass", simple("Patient"))
-                 .setHeader(FhirConstants.PROPERTY_PREFIX + "stringId", simple("${header.MRN}"))
-                 .setHeader(FhirConstants.PROPERTY_PREFIX + "url",
-                         simple("Observation?patient._id=${header.MRN}"))
-                 .multicast(new PatientObservationToBundleAggregationStrategy())
-                   .parallelProcessing()
-                   .to("fhir://read/resourceById?serverUrl={{serverUrl}}&fhirVersion={{fhirVersion}}",
-                       "fhir://search/searchByUrl?serverUrl={{serverUrl}}&fhirVersion={{fhirVersion}}")
-                   .end()
-                 .to("direct:send-to-hl7-server");
+            from("direct:synchronizeSalesforce")
+                 .split(header("MRNs").tokenize(","), new AggregateSalesForceResponse())
+                                            .parallelProcessing()
+                                            .stopOnException()
+                     .setHeader(FhirConstants.PROPERTY_PREFIX + "resourceClass", simple("Patient"))
+                     .setHeader(FhirConstants.PROPERTY_PREFIX + "stringId", simple("${body}"))
+                     .to("fhir://read/resourceById?serverUrl={{serverUrl}}&fhirVersion={{fhirVersion}}")
+                     .to("direct:convert-patient-to-ehr")
+                     // create or update Salesforce Health Cloud EHR
+                     .to("salesforce:upsertSObject?sObjectIdName=HealthCloudGA__SourceSystemId__c&sObjectName=HealthCloudGA__EhrPatient__c&sObjectIdValue=${body.HealthCloudGA__SourceSystemId__c}")
+                     .end();
 
-            from("direct:send-to-hl7-server")
-                  .to("direct:convert-fhir-bundle-hl7-message")
-                  .marshal().hl7()
-                  .to("netty4:tcp://{{hl7.host}}:{{hl7.port}}?sync=true&decoder=#hl7decoder&encoder=#hl7encoder");
+
+
+            from("direct:convert-patient-to-account")
+                  .log("${body}");
+
+            from("direct:salesforce")
+                    .setBody(simple("TestX"))
+                    .log("${body}");
+
         }
     }
 

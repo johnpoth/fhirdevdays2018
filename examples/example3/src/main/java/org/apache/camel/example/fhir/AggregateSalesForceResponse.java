@@ -5,7 +5,7 @@ import org.apache.camel.processor.aggregate.AggregationStrategy;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Resource;
 
-public class PatientObservationToBundleAggregationStrategy implements AggregationStrategy {
+public class AggregateSalesForceResponse implements AggregationStrategy {
 
     public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
         // the first time there are no existing message and therefore
@@ -20,14 +20,11 @@ public class PatientObservationToBundleAggregationStrategy implements Aggregatio
         // we want to merge together.
 
         // in this example we add their bodies
-        Resource oldBody = oldExchange.getIn().getBody(Resource.class);
-        Resource newBody = newExchange.getIn().getBody(Resource.class);
+        String oldBody = oldExchange.getIn().getBody(String.class);
+        String newBody = newExchange.getIn().getBody(String.class);
 
-        Bundle bundle = new Bundle().setType(Bundle.BundleType.TRANSACTION);
-        bundle.addEntry().setResource(oldBody);
-        bundle.addEntry().setResource(newBody);
 
-        oldExchange.getIn().setBody(bundle);
+        oldExchange.getIn().setBody(oldBody + newBody);
         // and return it
         return oldExchange;
     }
