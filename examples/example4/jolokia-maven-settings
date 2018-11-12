@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-export MAVEN_OPTS="-javaagent:/home/jpoth/.m2/repository/org/jolokia/jolokia-jvm/1.6.0/jolokia-jvm-1.6.0-agent.jar=config=/home/jpoth/dev/git/fhirdevdays2018/examples/example1/jolokia.properties"
