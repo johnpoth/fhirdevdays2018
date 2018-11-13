@@ -10,9 +10,9 @@
     <version>2018</version>
   </parent>
 
-  <artifactId>example1</artifactId>
-  <name>Camel :: Example :: Fhir :: Spring Boot</name>
-  <description>An example showing how to work with Camel, Fhir and Spring Boot</description>
+  <artifactId>demo</artifactId>
+  <name>Camel :: DEMO :: Fhir :: CDI</name>
+  <description>An example showing how to work with Camel, Fhir and CDI</description>
 
   <dependencies>
 

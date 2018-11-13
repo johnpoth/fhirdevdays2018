@@ -14,7 +14,7 @@ public class Application {
             restConfiguration().component("undertow")
                                .port("{{http.port}}")
                                .host("{{http.host}}")
-                               .apiProperty("api.title", "Patent Observation example")
+                               .apiProperty("api.title", "Patient Observation example")
                                .apiContextPath("api-doc");
 
             rest("getPatientObservation")

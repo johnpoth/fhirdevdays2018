@@ -10,8 +10,16 @@
     <version>2018</version>
   </parent>
 
-  <artifactId>slides</artifactId>
+  <artifactId>examples</artifactId>
+  <packaging>pom</packaging>
   <name>Camel :: Example :: Fhir :: Spring Boot</name>
   <description>An example showing how to work with Camel, Fhir and Spring Boot</description>
+
+  <modules>
+    <module>example1</module>
+    <module>example2</module>
+    <module>example3</module>
+    <module>demo</module>
+  </modules>
 
 </project>

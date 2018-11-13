@@ -1,0 +1,10 @@
+
+
+
+    <camelContext>
+        <route>
+            <from uri="file://orders/"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="jms:orders.queue"/>
+        </route>
+    </camelContext>

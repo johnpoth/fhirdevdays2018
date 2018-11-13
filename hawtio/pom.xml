@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>fhirdevdays</groupId>
+    <artifactId>source-code</artifactId>
+    <version>2018</version>
+  </parent>
+
+  <artifactId>hawtio</artifactId>
+  <name>Camel :: Example :: Fhir :: Spring Boot</name>
+  <description>An example showing how to work with Camel, Fhir and Spring Boot</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.hawt</groupId>
+        <artifactId>hawtio-maven-plugin</artifactId>
+        <version>${hawtio.version}</version>
+      </plugin>
+    </plugins>
+  </build>
+</project>
