@@ -33,9 +33,13 @@ public class Application {
                 // very simple mapping from a HL7 V2 message to dstu3 bundle
                 .convertBodyTo(Bundle.class)
                 // create Bundle in our FHIR server
+                // marshall to JSON for logging
+                .marshal().fhirJson("{{fhirVersion}}")
+                .log("Inserting Bundle: ${body}")
+                // create Bundle in our FHIR server
                 .to("fhir://transaction/withBundle?serverUrl={{serverUrl}}&fhirVersion={{fhirVersion}}");
         }
-    }
+}
 
     @Produces
     @ApplicationScoped
